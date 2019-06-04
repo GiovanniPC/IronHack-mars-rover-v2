@@ -1,9 +1,9 @@
 // Rover Object Goes Here
 // ======================
 
-const rover = [{ direction: 'N', x: 0, y: 0 }, { direction: 'N', x: 10, y: 10 }, { direction: 'N', x: 3, y: 7 }];
+const rover = [{ direction: 'N', x: 0, y: 0 }, { direction: 'N', x: 9, y: 9 }, { direction: 'N', x: 3, y: 7 }];
 const obstacles = [{ x: 0, y: 5 }, { x: 5, y: 9 }];
-const roverplaces = [];
+const roverplaces = [[], [], []];
 let oldshowdirection = '';
 let newshowdirection = '';
 let RoverN = 0;
@@ -171,7 +171,7 @@ function moveBackward() {
   switch (rover[RoverN].direction) {
     case 'N':
       iAMHERE = iceberg(0, 1);
-      if (rover[RoverN].y === 10 || iAMHERE === false) {
+      if (rover[RoverN].y === 9 || iAMHERE === false) {
         // eslint-disable-next-line no-console
         console.log('YOU SHALL NOT PASS!!!');
         break;
@@ -191,7 +191,7 @@ function moveBackward() {
       }
     case 'W':
       iAMHERE = iceberg(1, 0);
-      if (rover[RoverN].x === 10 || iAMHERE === false) {
+      if (rover[RoverN].x === 9 || iAMHERE === false) {
         // eslint-disable-next-line no-console
         console.log('YOU SHALL NOT PASS!!!');
         break;
@@ -251,10 +251,10 @@ function listCommands(commands) {
 function travelLog() {
   let NeverStopLog = true;
   while (NeverStopLog) {
-    if (roverplaces.length > 0) {
+    if (roverplaces[RoverN].length > 0) {
       // eslint-disable-next-line no-console
-      console.log(roverplaces[0]);
-      roverplaces.shift();
+      console.log(roverplaces[RoverN][0]);
+      roverplaces[RoverN].shift();
     } else {
       NeverStopLog = false;
     }
