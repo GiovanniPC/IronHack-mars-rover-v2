@@ -128,7 +128,7 @@ function moveForward() {
       break;
     case 'S':
       iAMHERE = iceberg(0, 1);
-      if (rover[RoverN].y === 10 || iAMHERE === false) {
+      if (rover[RoverN].y === 9 || iAMHERE === false) {
         // eslint-disable-next-line no-console
         console.log('YOU SHALL NOT PASS!!!');
         break;
@@ -147,8 +147,8 @@ function moveForward() {
         break;
       }
     case 'E':
-      iAMHERE = iceberg(-1, 0);
-      if (rover[RoverN].x === 0 || iAMHERE === false) {
+      iAMHERE = iceberg(1, 0);
+      if (rover[RoverN].x === 9 || iAMHERE === false) {
         // eslint-disable-next-line no-console
         console.log('YOU SHALL NOT PASS!!!');
         break;
