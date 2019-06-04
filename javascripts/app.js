@@ -1,183 +1,262 @@
 // Rover Object Goes Here
 // ======================
 
-var rover = { direction: "N", x: 0, y: 0}
-
-var roverplaces = [];
-
+const rover = [{ direction: 'N', x: 0, y: 0 }, { direction: 'N', x: 10, y: 10 }, { direction: 'N', x: 3, y: 7 }];
+const obstacles = [{ x: 0, y: 5 }, { x: 5, y: 9 }];
+const roverplaces = [];
+let oldshowdirection = '';
+let newshowdirection = '';
+let RoverN = 0;
+let iAMHERE = true;
 // ======================
-function turnLeft(){
 
-  switch (rover.direction){
-    case "N":
-      rover.direction = "W";
-      var oldshowdirection = "North";
-      var newshowdirection = "West";
+
+// eslint-disable-next-line no-unused-vars
+function chooseRover(n) {
+  let RoverMove = '';
+  switch (n) {
+    case 1:
+      RoverN = 0;
+      RoverMove = 'Change to Rover 1';
       break;
-    case "W":
-        rover.direction = "S";
-        var oldshowdirection = "West";
-        var newshowdirection = "South";
-        break;
-    case "S":
-      rover.direction = "E";
-      var oldshowdirection = "South";
-      var newshowdirection = "East";
+    case 2:
+      RoverN = 1;
+      RoverMove = 'Change to Rover 2';
       break;
-    case "E":
-        rover.direction = "N";
-        var oldshowdirection = "East";
-        var newshowdirection = "North";
+    case 3:
+      RoverN = 2;
+      RoverMove = 'Change to Rover 3';
+      break;
+    default:
+      RoverMove = 'Rover not Exist!!';
   }
-
-  console.log("Rover is facing", oldshowdirection + " and turns left => Rover is fancing", newshowdirection);
-
+  return RoverMove;
 }
 
-function turnRight(){
-
-  switch (rover.direction){
-    case "N":
-      rover.direction = "E";
-      var oldshowdirection = "North";
-      var newshowdirection = "East";
+function turnLeft() {
+  // eslint-disable-next-line default-case
+  switch (rover[RoverN].direction) {
+    case 'N':
+      rover[RoverN].direction = 'W';
+      oldshowdirection = 'North';
+      newshowdirection = 'West';
       break;
-    case "W":
-      rover.direction = "N";
-      var oldshowdirection = "West";
-      var newshowdirection = "North";
+    case 'W':
+      rover[RoverN].direction = 'S';
+      oldshowdirection = 'West';
+      newshowdirection = 'South';
       break;
-    case "S":
-      rover.direction = "W";
-      var oldshowdirection = "South";
-      var newshowdirection = "West";
+    case 'S':
+      rover[RoverN].direction = 'E';
+      oldshowdirection = 'South';
+      newshowdirection = 'East';
       break;
-    case "E":
-      rover.direction = "S";
-      var oldshowdirection = "East";
-      var newshowdirection = "South";
-      break;
+    case 'E':
+      rover[RoverN].direction = 'N';
+      oldshowdirection = 'East';
+      newshowdirection = 'North';
   }
-  
-  console.log("Rover is facing", oldshowdirection + " and turns left => Rover is fancing", newshowdirection);
 
+  // eslint-disable-next-line no-console
+  console.log('Rover is facing', `${oldshowdirection} and turns left => Rover is fancing`, newshowdirection);
 }
 
-function moveForward(){
-  console.log("GO FORWARD MY BOT!!!!")
+function turnRight() {
+  // eslint-disable-next-line default-case
+  switch (rover.direction) {
+    case 'N':
+      rover[RoverN].direction = 'E';
+      oldshowdirection = 'North';
+      newshowdirection = 'East';
+      break;
+    case 'W':
+      rover[RoverN].direction = 'N';
+      oldshowdirection = 'West';
+      newshowdirection = 'North';
+      break;
+    case 'S':
+      rover[RoverN].direction = 'W';
+      oldshowdirection = 'South';
+      newshowdirection = 'West';
+      break;
+    case 'E':
+      rover[RoverN].direction = 'S';
+      oldshowdirection = 'East';
+      newshowdirection = 'South';
+      break;
+  }
 
-  switch (rover.direction){
-    case "N":
-      if(rover.y == 0 ){
-        console.log("YOU SHALL NOT PASS!!!");
+  // eslint-disable-next-line no-console
+  console.log('Rover is facing', `${oldshowdirection} and turns left => Rover is fancing`, newshowdirection);
+}
+
+function iceberg(newx, newy) {
+  let nObstacles = obstacles.length - 1;
+  let nRover = rover.length - 1;
+  while (nObstacles > -1) {
+    if ((rover[RoverN].x + newx) === obstacles[nObstacles].x
+      && (rover[RoverN].y + newy) === obstacles[nObstacles].y) {
+      return false;
+    }
+    nObstacles -= 1;
+  }
+  while (nRover > -1) {
+    if (nRover !== RoverN) {
+      if ((rover[RoverN].x + newx) === rover[nRover].x
+        && (rover[RoverN].y + newy) === rover[nRover].y) {
+        return false;
+      }
+    }
+    nRover -= 1;
+  }
+  return true;
+}
+
+function moveForward() {
+  // eslint-disable-next-line no-console
+  console.log('GO FORWARD MY BOT!!!!');
+  // eslint-disable-next-line default-case
+  switch (rover[RoverN].direction) {
+    case 'N':
+      iAMHERE = iceberg(0, -1);
+      if (rover[RoverN].y === 0 || iAMHERE === false) {
+        // eslint-disable-next-line no-console
+        console.log('YOU SHALL NOT PASS!!!');
+      } else {
+        rover[RoverN].y -= 1;
+      }
+      break;
+    case 'S':
+      iAMHERE = iceberg(0, 1);
+      if (rover[RoverN].y === 10 || iAMHERE === false) {
+        // eslint-disable-next-line no-console
+        console.log('YOU SHALL NOT PASS!!!');
         break;
       } else {
-        rover.y--;
+        rover[RoverN].y += 1;
         break;
       }
-    case "S":
-      if(rover.y == 10){
-        console.log("YOU SHALL NOT PASS!!!");
-        break;
-      } else{
-        rover.y++;
-        break;
-      }
-    case "W":
-      if(rover.x == 0){
-        console.log("YOU SHALL NOT PASS!!!");
+    case 'W':
+      iAMHERE = iceberg(-1, 0);
+      if (rover[RoverN].x === 0 || iAMHERE === false) {
+        // eslint-disable-next-line no-console
+        console.log('YOU SHALL NOT PASS!!!');
         break;
       } else {
-        rover.x--;
+        rover[RoverN].x -= 1;
         break;
       }
-    case "E":
-      if(rover.x == 0){
-        console.log("YOU SHALL NOT PASS!!!");
+    case 'E':
+      iAMHERE = iceberg(-1, 0);
+      if (rover[RoverN].x === 0 || iAMHERE === false) {
+        // eslint-disable-next-line no-console
+        console.log('YOU SHALL NOT PASS!!!');
         break;
-      } else{
-        rover.x++;
+      } else {
+        rover[RoverN].y += 1;
         break;
       }
   }
-  console.log("Position: [",rover.x,",",rover.y,"]")
-  roverplaces.push("[",rover.x,",",rover.y,"]")
+
+  const goingPlaces = `[ ${rover[RoverN].x} , ${rover[RoverN].y} ]`;
+  roverplaces.push(goingPlaces);
+  return (`Position: [ ${rover[RoverN].x} , ${rover[RoverN].y} ]`);
 }
 
-function moveBackward(){
-  console.log("Doing a MoonWalk!")
+function moveBackward() {
+  // eslint-disable-next-line no-console
+  console.log('Doing a MoonWalk!');
 
-  switch (rover.direction){
-    case "N":
-      if(rover.y == 10){
-        console.log("YOU SHALL NOT PASS!!!");
+  // eslint-disable-next-line default-case
+  switch (rover[RoverN].direction) {
+    case 'N':
+      iAMHERE = iceberg(0, 1);
+      if (rover[RoverN].y === 10 || iAMHERE === false) {
+        // eslint-disable-next-line no-console
+        console.log('YOU SHALL NOT PASS!!!');
         break;
       } else {
-        rover.y++;
+        rover[RoverN].y += 1;
         break;
       }
-    case "S":
-      if(rover.y == 0){
-        console.log("YOU SHALL NOT PASS!!!");
-        break;
-      } else{
-        rover.y--;
-        break;
-      }
-    case "W":
-      if(rover.x == 10){
-        console.log("YOU SHALL NOT PASS!!!");
+    case 'S':
+      iAMHERE = iceberg(0, -1);
+      if (rover[RoverN].y === 0 || iAMHERE === false) {
+        // eslint-disable-next-line no-console
+        console.log('YOU SHALL NOT PASS!!!');
         break;
       } else {
-        rover.x++;
+        rover[RoverN].y -= 1;
         break;
       }
-    case "E":
-      if(rover.x == 0){
-        console.log("YOU SHALL NOT PASS!!!");
+    case 'W':
+      iAMHERE = iceberg(1, 0);
+      if (rover[RoverN].x === 10 || iAMHERE === false) {
+        // eslint-disable-next-line no-console
+        console.log('YOU SHALL NOT PASS!!!');
         break;
-      } else{
-        rover.x--;
+      } else {
+        rover[RoverN].x += 1;
+        break;
+      }
+    case 'E':
+      iAMHERE = iceberg(-1, 0);
+      if (rover[RoverN].x === 0 || iAMHERE === false) {
+        // eslint-disable-next-line no-console
+        console.log('YOU SHALL NOT PASS!!!');
+        break;
+      } else {
+        rover[RoverN].y -= 1;
         break;
       }
   }
-  console.log("Position: [",rover.x,",",rover.y,"]")
-  roverplaces.push("[",rover.x,",",rover.y,"]")
+  const goingPlaces = `[ ${rover[RoverN].x} , ${rover[RoverN].y} ]`;
+  roverplaces.push(goingPlaces);
+  return (`Position: [ ${rover[RoverN].x} , ${rover[RoverN].y} ]`);
 }
 
-function listCommands(commands){
-  var NeverStop = true;
+// eslint-disable-next-line no-unused-vars
+function listCommands(commands) {
+  let NeverStop = true;
 
-  while (NeverStop){
-    if(commands.length > 0) {
-      var command = commands[0];
+  while (NeverStop) {
+    if (commands.length > 0) {
+      const command = commands[0];
+      // eslint-disable-next-line no-param-reassign
       commands = commands.substr(1);
-      switch (command){
-        case "l":
+      switch (command) {
+        case 'l':
           turnLeft();
           break;
-        case "r":
-          turnRight()
+        case 'r':
+          turnRight();
           break;
-        case "f":
-          moveForward()
+        case 'f':
+          moveForward();
           break;
-        case "b":
-          moveBackward()
+        case 'b':
+          moveBackward();
           break;
         default:
-          console.log("Man I don't know what you are asking, I am going to ignore this command:", command)
-          break;
+          return `Man I don't know what you are asking, I am going to ignore this command:  ${command}`;
       }
     } else {
       NeverStop = false;
-      console.log("Ufff It's finally over!")
     }
   }
+  return 'Ufff It`s finally over!';
 }
 
-function travelLog(position){
-
-  // print all positions
-
+// eslint-disable-next-line no-unused-vars
+function travelLog() {
+  let NeverStopLog = true;
+  while (NeverStopLog) {
+    if (roverplaces.length > 0) {
+      // eslint-disable-next-line no-console
+      console.log(roverplaces[0]);
+      roverplaces.shift();
+    } else {
+      NeverStopLog = false;
+    }
+  }
 }
