@@ -10,6 +10,32 @@ let RoverN = 0;
 let iAMHERE = true;
 // ======================
 
+function roverAndObstacles() {
+  let nObstacles = obstacles.length - 1;
+  let nRover = rover.length - 1;
+  while (nObstacles > -1) {
+    document.getElementById(`P${obstacles[nObstacles].y}${obstacles[nObstacles].x}`).innerHTML = 'Obstacle';
+    nObstacles -= 1;
+  }
+  while (nRover > -1) {
+    document.getElementById(`P${rover[nRover].y}${rover[nRover].x}`).innerHTML = `Rover${nRover + 1}`;
+    nRover -= 1;
+  }
+}
+function cleanRover(oldx, oldy) {
+  document.getElementById(`P${rover[RoverN].y + oldy}${rover[RoverN].x + oldx}`).innerHTML = '';
+}
+
+function createTable() {
+  const table = document.createElement('table');
+  for (let line = 0; line < 10; line += 1) {
+    const row = table.insertRow(line);
+    for (let column = 0; column < 10; column += 1) {
+      row.insertCell(column).setAttribute('id', `P${line}${column}`);
+    }
+  }
+  document.getElementById('arena').appendChild(table);
+}
 
 // eslint-disable-next-line no-unused-vars
 function chooseRover(n) {
@@ -63,7 +89,7 @@ function turnLeft() {
 
 function turnRight() {
   // eslint-disable-next-line default-case
-  switch (rover.direction) {
+  switch (rover[RoverN].direction) {
     case 'N':
       rover[RoverN].direction = 'E';
       oldshowdirection = 'North';
@@ -124,6 +150,8 @@ function moveForward() {
         console.log('YOU SHALL NOT PASS!!!');
       } else {
         rover[RoverN].y -= 1;
+        cleanRover(0, 1);
+        roverAndObstacles();
       }
       break;
     case 'S':
@@ -134,6 +162,8 @@ function moveForward() {
         break;
       } else {
         rover[RoverN].y += 1;
+        cleanRover(0, -1);
+        roverAndObstacles();
         break;
       }
     case 'W':
@@ -144,6 +174,8 @@ function moveForward() {
         break;
       } else {
         rover[RoverN].x -= 1;
+        cleanRover(1, 0);
+        roverAndObstacles();
         break;
       }
     case 'E':
@@ -153,11 +185,12 @@ function moveForward() {
         console.log('YOU SHALL NOT PASS!!!');
         break;
       } else {
-        rover[RoverN].y += 1;
+        rover[RoverN].x += 1;
+        cleanRover(-1, 0);
+        roverAndObstacles();
         break;
       }
   }
-
   const goingPlaces = `[ ${rover[RoverN].x} , ${rover[RoverN].y} ]`;
   roverplaces.push(goingPlaces);
   return (`Position: [ ${rover[RoverN].x} , ${rover[RoverN].y} ]`);
@@ -177,6 +210,8 @@ function moveBackward() {
         break;
       } else {
         rover[RoverN].y += 1;
+        cleanRover(0, -1);
+        roverAndObstacles();
         break;
       }
     case 'S':
@@ -187,6 +222,8 @@ function moveBackward() {
         break;
       } else {
         rover[RoverN].y -= 1;
+        cleanRover(0, 1);
+        roverAndObstacles();
         break;
       }
     case 'W':
@@ -197,6 +234,8 @@ function moveBackward() {
         break;
       } else {
         rover[RoverN].x += 1;
+        cleanRover(-1, 0);
+        roverAndObstacles();
         break;
       }
     case 'E':
@@ -206,10 +245,13 @@ function moveBackward() {
         console.log('YOU SHALL NOT PASS!!!');
         break;
       } else {
-        rover[RoverN].y -= 1;
+        rover[RoverN].x -= 1;
+        cleanRover(1, 0);
+        roverAndObstacles();
         break;
       }
   }
+  roverAndObstacles();
   const goingPlaces = `[ ${rover[RoverN].x} , ${rover[RoverN].y} ]`;
   roverplaces.push(goingPlaces);
   return (`Position: [ ${rover[RoverN].x} , ${rover[RoverN].y} ]`);
@@ -260,3 +302,6 @@ function travelLog() {
     }
   }
 }
+
+createTable();
+roverAndObstacles();
